@@ -1,0 +1,20 @@
+--- mmpf_uart.c	2014-09-30 13:26:37.450900393 +0800
++++ /mnt/hgfs/shareddata/moto/mmpf_uart.c	2014-09-03 20:35:54.000000000 +0800
+@@ -647,15 +647,10 @@
+     // Define the baud rate divisor register
+     pUS->US_BRGR = (((uartattribute->ulMasterclk << 1) /
+                     uartattribute->ulBaudrate) + 1) >> 1;
+-
+-    //printk(KERN_ERR" pUS->US_BRGR : %x \n",pUS->US_BRGR);
+-
+     if(uartattribute->mode & AIT_UART_RTSCTS) //if hw flow control is enabled
+     {
+-    	//pUS->US_CR = US_ASYNC_MODE | US_TXEN | US_RXEN |		 	 	 	 US_CTS_RTS_ENABLE | US_CTS_RTS_MODE1 | US_CTS_RTS_HOST_MODE | 0x30;
+-	pUS->US_CR = US_TXEN | US_RXEN | US_CTS_RTS_ENABLE | US_CTS_RTS_MODE1 | US_CTS_RTS_HOST_MODE | 0x30;
+-//AITJFY
+-
++    	pUS->US_CR = US_ASYNC_MODE | US_TXEN | US_RXEN |
++		 	 	 	 US_CTS_RTS_ENABLE | US_CTS_RTS_MODE1 | US_CTS_RTS_HOST_MODE | 0x30;
+     				 //US_CTS_RTS_ENABLE | US_CTS_RTS_MODE1 | US_CTS_RTS_HOST_MODE | US_CTS_RTS_ACTIVE_H | 0x30; //for testing
+     }
+     else

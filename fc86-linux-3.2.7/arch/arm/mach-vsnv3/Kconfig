@@ -1,0 +1,130 @@
+if ARCH_VSNV3
+
+config HAVE_AT91_DATAFLASH_CARD
+	bool
+
+config HAVE_AT91_USART3
+	bool
+
+config HAVE_AT91_USART4
+	bool
+
+config HAVE_AT91_USART5
+	bool
+
+menu "AIT VSNV3 System-on-Chip"
+
+choice
+	prompt "AIT VSNV3 Processor"
+
+config ARCH_VSNV3AIT845X
+	bool "VSNV3AIT845X"
+	select CPU_ARM926T
+	select GENERIC_CLOCKEVENTS
+	select HAVE_AT91_USART3
+	select HAVE_AT91_USART4
+	select HAVE_AT91_USART5
+	select HAVE_NET_MACB
+	select WIRELESS_EXT
+	select WEXT_PRIV
+	#select VIDEO_AIT_CAMERA
+endchoice
+
+config AT91_PMC_UNIT
+	bool
+	default !ARCH_AT91X40
+
+# ----------------------------------------------------------
+
+if ARCH_VSNV3AIT845X
+
+#comment "VSNV3AIT845X Variants"
+comment "VSNV3AIT845X Board Type"
+choice
+  prompt "VSNV3AIT845X Board Type"
+config BOARD_VSNV3_AIT8455EVB
+	bool "AIT AIT8455EVB Evaluation Kit"
+	
+	help
+	  Select this if you are using AIT's AIT8455 Evaluation Kit
+
+config BOARD_VSNV3_AIT8455CLOUD
+	bool "AIT AIT8455 CLOUD Evaluation Kit"
+	
+	help
+	  Select this if you are using AIT's AIT8455 Evaluation Kit
+
+endchoice	 
+endif	  
+# ----------------------------------------------------------
+
+# ----------------------------------------------------------
+
+#comment "Generic Board Type"
+
+#config MACH_AT91SAM_DT
+#	bool "Atmel AT91SAM Evaluation Kits with device-tree support"
+#	select USE_OF
+#	help
+#	  Select this if you want to experiment device-tree with
+#	  an Atmel Evaluation Kit.
+
+# ----------------------------------------------------------
+
+#comment "AT91 Board Options"
+
+#config MTD_AT91_DATAFLASH_CARD
+#	bool "Enable DataFlash Card support"
+#	depends on HAVE_AT91_DATAFLASH_CARD
+#	help
+#	  Enable support for the DataFlash card.
+
+# ----------------------------------------------------------
+
+comment "VSNV3 Feature Selections"
+
+#config VSNV3_SLOW_CLOCK
+#	bool "Suspend-to-RAM disables main oscillator"
+#	depends on SUSPEND
+#	help
+#	  Select this if you want Suspend-to-RAM to save the most power
+#	  possible (without powering off the CPU) by disabling the PLLs
+#	  and main oscillator so that only the 32 KiHz clock is available.
+
+#	  When only that slow-clock is available, some peripherals lose
+#	  functionality.  Many can't issue wakeup events unless faster
+#	  clocks are available.  Some lose their operating state and
+#	  need to be completely re-initialized.
+
+config VSNV3_TIMER_HZ
+       int "Kernel HZ (jiffies per second)"
+       range 32 1024
+       depends on ARCH_VSNV3
+       default "100"
+       help
+	  On AT91rm9200 chips where you're using a system clock derived
+	  from the 32768 Hz hardware clock, this tick rate should divide
+	  it exactly: use a power-of-two value, such as 128 or 256, to
+	  reduce timing errors caused by rounding.
+
+	  On AT91sam926x chips, or otherwise when using a higher precision
+	  system clock (of at least several MHz), rounding is less of a
+	  problem so it can be safer to use a decimal values like 100.
+
+choice
+	prompt "Select a UART for early kernel messages"
+
+config AT91_EARLY_DBGU
+	bool "DBGU"
+
+config AT91_EARLY_USART0
+	bool "USART0"
+
+config AT91_EARLY_USART1
+	bool "USART1"
+
+endchoice
+
+endmenu
+
+endif

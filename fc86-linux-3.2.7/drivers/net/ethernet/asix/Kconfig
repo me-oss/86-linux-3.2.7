@@ -1,0 +1,16 @@
+#
+# ASIX device configuration
+#
+
+config AX88796C
+	tristate "AX88796C support"
+	depends on ARM
+	select CRC32
+	select NET_CORE
+	select MII
+	---help---
+	  Support for AX88796C chipset.
+
+	  To compile this driver as a module, choose M here.  The module
+	  will be called AX88796C.
+
